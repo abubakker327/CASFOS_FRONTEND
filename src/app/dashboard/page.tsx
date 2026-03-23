@@ -3,10 +3,10 @@
 import { cn } from "../../lib/utils";
 import { motion } from "framer-motion";
 import {
-  BookOpen, Users, ClipboardCheck, AlertTriangle, CheckCircle2,
+  Users, ClipboardCheck, AlertTriangle, CheckCircle2,
   CalendarDays, TrendingUp, TrendingDown, MapPin, Wallet,
-  FileText, Bell, Zap, ChevronRight, UserCheck, BarChart3,
-  IndianRupee, Shield, MoreHorizontal, ArrowUpRight, Clock,
+  FileText, Bell, ChevronRight, UserCheck, BarChart3,
+  IndianRupee, Shield, ArrowUpRight,
   GraduationCap, Activity
 } from "lucide-react";
 import {
@@ -100,7 +100,7 @@ const fade = {
 // ─── Page ────────────────────────────────────────────────────────────────────
 export default function Dashboard() {
   return (
-    <div className="p-6 md:p-8 pb-16 flex flex-col gap-6 max-w-[1600px] mx-auto">
+    <div className="p-6 md:p-8 pb-16 flex flex-col gap-6 max-w-400 mx-auto">
 
       {/* Header */}
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
@@ -124,7 +124,7 @@ export default function Dashboard() {
           { label: "Total Faculty",   val: "32",       sub: "6 on leave",     icon: UserCheck,     grad: "from-amber-400 to-amber-600" },
         ].map((k, i) => (
           <motion.div key={k.label} custom={i} initial="hidden" animate="visible" variants={fade}
-            className={`bg-gradient-to-br ${k.grad} rounded-2xl p-5 text-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default`}>
+            className={`bg-linear-to-br ${k.grad} rounded-2xl p-5 text-white shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-default`}>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-bold uppercase tracking-widest opacity-80">{k.label}</span>
               <k.icon className="w-4 h-4 opacity-70" />
@@ -197,7 +197,7 @@ export default function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
                 <XAxis dataKey="week" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} unit="%" />
-                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v: any) => [`${v}%`, "Progress"]} />
+                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v) => typeof v === 'number' ? [`${v}%`, "Progress"] : null} />
                 <Area type="monotone" dataKey="pct" stroke="#256242" strokeWidth={2.5} fill="url(#prog)" dot={{ fill: "#256242", r: 4, strokeWidth: 0 }} activeDot={{ r: 6, fill: "#256242" }} />
               </AreaChart>
             </ResponsiveContainer>
@@ -213,7 +213,7 @@ export default function Dashboard() {
                 <Pie data={batchPie} cx="50%" cy="50%" innerRadius={42} outerRadius={62} dataKey="value" paddingAngle={4}>
                   {batchPie.map((_, i) => <Cell key={i} fill={PIE_COLORS[i]} />)}
                 </Pie>
-                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v: any) => [`${v} trainees`]} />
+                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v) => typeof v === 'number' ? [`${v} trainees`] : null} />
               </PieChart>
             </ResponsiveContainer>
             <div className="flex gap-4 mt-1">
@@ -314,7 +314,7 @@ export default function Dashboard() {
               };
               return (
                 <div key={t.time} className={`group flex items-center gap-4 px-4 py-3.5 rounded-xl border transition-all hover:shadow-md cursor-pointer ${colors[t.color]}`}>
-                  <span className={`text-[13px] font-black w-[44px] shrink-0 ${timeColors[t.color]}`}>{t.time}</span>
+                  <span className={`text-[13px] font-black w-11 shrink-0 ${timeColors[t.color]}`}>{t.time}</span>
                   <div className="flex-1 min-w-0">
                     <p className="text-[13px] font-bold text-gray-900 truncate">{t.subject}</p>
                     <p className="text-[11px] text-gray-500">{t.faculty}</p>
@@ -433,7 +433,7 @@ export default function Dashboard() {
               <BarChart data={fundData} layout="vertical" barSize={14}>
                 <XAxis type="number" tick={{ fontSize: 11, fill: "#9ca3af" }} axisLine={false} tickLine={false} unit="L" />
                 <YAxis dataKey="category" type="category" width={90} tick={{ fontSize: 11, fill: "#6b7280" }} axisLine={false} tickLine={false} />
-                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v: any) => [`₹${v}L`]} />
+                <Tooltip contentStyle={{ borderRadius: 10, border: "none", boxShadow: "0 4px 20px rgba(0,0,0,0.1)", fontSize: 12 }} formatter={(v) => typeof v === 'number' ? [`₹${v}L`] : null} />
                 <Bar dataKey="amount" radius={[0, 5, 5, 0]}>
                   {fundData.map((_, i) => <Cell key={i} fill={["#166534","#15803d","#4ade80","#86efac"][i]} />)}
                 </Bar>
@@ -570,7 +570,7 @@ function MiniStat({ label, value }: { label: string; value: string }) {
 
 function BigKpi({ label, value, trend, icon, grad }: { label: string; value: string; trend: string; icon: React.ReactNode; grad: string }) {
   return (
-    <div className={`bg-gradient-to-br ${grad} rounded-xl p-4 text-white flex flex-col gap-2 hover:scale-[1.02] transition-transform shadow-sm hover:shadow-md`}>
+    <div className={`bg-linear-to-br ${grad} rounded-xl p-4 text-white flex flex-col gap-2 hover:scale-[1.02] transition-transform shadow-sm hover:shadow-md`}>
       <div className="flex items-center justify-between opacity-80">
         <div className="w-4 h-4">{icon}</div>
         <span className="text-[11px] font-bold">{trend}</span>
