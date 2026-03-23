@@ -73,7 +73,7 @@ export default function Login() {
     } catch (err: unknown) {
       const error = err as {
         response?: { data?: { message?: string }; status?: number };
-        request?: any;
+        request?: XMLHttpRequest;
         message?: string
       };
 
