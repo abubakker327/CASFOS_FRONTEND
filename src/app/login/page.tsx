@@ -71,8 +71,23 @@ export default function Login() {
         router.push(response.data.data.redirect);
       }
     } catch (err: unknown) {
-      const error = err as { response?: { data?: { message?: string } } };
-      setError(error.response?.data?.message || "Login failed. Please check your credentials.");
+      const error = err as {
+        response?: { data?: { message?: string }; status?: number };
+        request?: any;
+        message?: string
+      };
+
+      // Handle different types of errors
+      if (error.response) {
+        // Server responded with error status
+        setError(error.response.data?.message || `Login failed (${error.response.status})`);
+      } else if (error.request) {
+        // Network error - server not reachable
+        setError("Unable to connect to server. Please check if the backend is running.");
+      } else {
+        // Other error
+        setError("An unexpected error occurred. Please try again.");
+      }
     } finally {
       setLoading(false);
     }
@@ -132,6 +147,11 @@ export default function Login() {
           {error && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl">
               <p className="text-[13px] font-medium text-red-600">{error}</p>
+              {error.includes("connect to server") && (
+                <p className="text-[11px] text-red-500 mt-1">
+                  Make sure your Laravel backend is running on port 8000.
+                </p>
+              )}
             </div>
           )}
 
