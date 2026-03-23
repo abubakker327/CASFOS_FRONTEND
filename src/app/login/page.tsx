@@ -70,8 +70,9 @@ export default function Login() {
         // Redirect based on role from backend
         router.push(response.data.data.redirect);
       }
-    } catch (err: any) {
-      setError(err.response?.data?.message || "Login failed. Please check your credentials.");
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { message?: string } } };
+      setError(error.response?.data?.message || "Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }
@@ -88,9 +89,9 @@ export default function Login() {
           style={{ backgroundImage: "url('/forest_sun.png')" }}
         />
         {/* Gradient Overlay for Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#102d1d]/90 via-[#102d1d]/40 to-transparent z-0" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#102d1d]/90 via-[#102d1d]/40 to-transparent z-0" />
 
-        <div className="relative z-10 w-full max-w-[500px] p-8 sm:p-10 rounded-3xl backdrop-blur-md bg-black/10 border border-white/10 shadow-2xl">
+        <div className="relative z-10 w-full max-w-125 p-8 sm:p-10 rounded-3xl backdrop-blur-md bg-black/10 border border-white/10 shadow-2xl">
           <div className="flex flex-col gap-8">
             {/* Header / Badges */}
             <div className="flex items-center gap-3">
@@ -108,7 +109,7 @@ export default function Login() {
 
             {/* Blockquote */}
             <div className="flex gap-4 items-stretch pr-4">
-              <div className="w-[4px] bg-[#95cd84] rounded-full shrink-0 shadow-[0_0_8px_rgba(149,205,132,0.6)]" />
+              <div className="w-1 bg-[#95cd84] rounded-full shrink-0 shadow-[0_0_8px_rgba(149,205,132,0.6)]" />
               <p className="text-[17px] text-white/95 font-medium leading-[1.6] tracking-wide drop-shadow-sm py-1">
                 “A centralized digital platform supporting training programmes, learning resources, assessments, and institutional services of CASFOS, Coimbatore.”
               </p>
@@ -120,7 +121,7 @@ export default function Login() {
       {/* Right Panel: Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 relative overflow-y-auto z-10">
 
-        <div className="w-full max-w-[420px] bg-white rounded-3xl p-10 sm:p-12 shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-gray-100 relative">
+        <div className="w-full max-w-105 bg-white rounded-3xl p-10 sm:p-12 shadow-[0_8px_40px_rgba(0,0,0,0.04)] border border-gray-100 relative">
 
           <div className="text-center mb-8">
             <h2 className="text-[28px] font-bold text-gray-900 serif-font mb-1.5">Welcome Back</h2>
